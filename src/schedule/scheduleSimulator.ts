@@ -16,7 +16,7 @@ export function firstFailedDeadline(
     const maxEndTime = _.max(runningRecords.map(runningRecord => runningRecord.endTime));
     const absoluteDeadlines: Array<{ id: number, round: number, deadline: number }> = [];
     tasks.forEach((task, id) => {
-        const taskAbsoluteDeadlines = _.range(task.offset + task.deadline, maxEndTime, task.period);
+        const taskAbsoluteDeadlines = _.range(task.offset + task.deadline, maxEndTime! + 1, task.period);
         taskAbsoluteDeadlines.forEach((taskDeadline, round) => {
             absoluteDeadlines.push({ id, round, deadline: taskDeadline });
         });

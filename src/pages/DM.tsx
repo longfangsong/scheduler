@@ -58,7 +58,7 @@ export function DM({ tasks }: { tasks: Array<Task> }) {
     const failedDeadline = firstFailedDeadline(tasks, runningRecords);
     const [testPass, testText] = responseTimeTest(tasks);
 
-    return <Accordion>
+    return <Accordion alwaysOpen>
         <Accordion.Panel>
             <Accordion.Title>
                 {
@@ -90,7 +90,7 @@ export function DM({ tasks }: { tasks: Array<Task> }) {
                 </List>
                 {testApplicable ? <>
                     {
-                        testText.map(t => <MathJax key={t}>{`\\(${t}\\)`}</MathJax>)
+                        testText.map(t => <MathJax dynamic key={t}>{`\\(${t}\\)`}</MathJax>)
                     }
                 </> : <></>}
             </Accordion.Content>
@@ -110,8 +110,8 @@ export function DM({ tasks }: { tasks: Array<Task> }) {
                 }
             </Accordion.Title>
             <Accordion.Content>
-                <MathJax>{`\\(LCM\\{${tasks.map(task => task.period).join(",")}\\}=${lcm(tasks.map(task => task.period))}\\)`}</MathJax>
-                <TimingDiagram tasks={tasks} runningRecords={runningRecords} />
+                <MathJax dynamic>{`\\(LCM\\{${tasks.map(task => task.period).join(",")}\\}=${lcm(tasks.map(task => task.period))}\\)`}</MathJax>
+                <TimingDiagram tasks={tasks} runningRecords={runningRecords} maxX={lcm(tasks.map(task => task.period))} />
             </Accordion.Content>
         </Accordion.Panel>
     </Accordion>

@@ -61,7 +61,7 @@ export function TaskTable(
                             updateTasks(newTasks);
                         }
                         return <tr key={`${index}-${task.wcet}-${task.deadline}-${task.period}-${task.offset}`}>
-                            <td><MathJax>{`\\(τ_${index}\\)`}</MathJax></td>
+                            <td><MathJax dynamic>{`\\(τ_${index}\\)`}</MathJax></td>
                             <td><EditableText initialText={task.wcet?.toString() || ""} onBlur={value => {
                                 const wcet = parseInt(value);
                                 const newTask = { ...task, wcet };
@@ -83,7 +83,7 @@ export function TaskTable(
                                 updateTasksState(index, newTask);
                             }} /></td>
                             <td>{task.wcet !== null && task.period !== null ?
-                                <MathJax>
+                                <MathJax dynamic>
                                     {`\\(${math.simplify(`${task.wcet} / ${task.period}`).toTex()}\\)`}
                                 </MathJax> : <></>}</td>
                             <td>

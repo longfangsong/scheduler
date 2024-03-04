@@ -14,9 +14,8 @@ const TaskColors = [
     "#FFCC99"
 ];
 
-export function TimingDiagram({ tasks, runningRecords }:
-    { tasks: Array<Task>, runningRecords: Array<RunningRecord> }) {
-    const maxX = _.max(runningRecords.map(record => record.endTime))!;
+export function TimingDiagram({ tasks, runningRecords, maxX }:
+    { tasks: Array<Task>, runningRecords: Array<RunningRecord>, maxX: number }) {
     const missedDeadline = firstFailedDeadline(tasks, runningRecords);
 
     const [dashedLineX, setDashedLineX] = useState(0);

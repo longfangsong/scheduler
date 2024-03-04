@@ -67,7 +67,7 @@ function BRHTest(tasks: Array<Task>): [Array<string>, Array<ProcessorDemandResul
             = \\{${k.map(it => `${it}`).join(',')}\\}`);
         allK.push(...k);
     }
-    allK.sort();
+    allK.sort((a, b) => a - b);
     allK = _.sortedUniq(allK);
     result.push(`K = \\{${allK.map(it => `${it}`).join(',')}\\}`);
     for (const l of allK) {
@@ -99,7 +99,7 @@ export function EDF({ tasks }: { tasks: Array<Task> }) {
     const runningRecords = simulateSchedule("EDF", tasks, lcm(tasks.map(task => task.period)));
     const failedDeadline = firstFailedDeadline(tasks, runningRecords);
 
-    return <Accordion>
+    return <Accordion alwaysOpen>
         <Accordion.Panel>
             <Accordion.Title>
                 {
@@ -133,10 +133,10 @@ export function EDF({ tasks }: { tasks: Array<Task> }) {
                     <MathJax dynamic>{`\\(${calculateU}\\)`}</MathJax>
                     {
                         u <= 1 ? <>
-                            <MathJax>{`\\(U \\leq 1\\)`}</MathJax>
+                            <MathJax dynamic>{`\\(U \\leq 1\\)`}</MathJax>
                             <p className="text-green-400">Test passed</p>
                         </> : <>
-                            <MathJax>{`\\(U > 1\\)`}</MathJax>
+                            <MathJax dynamic>{`\\(U > 1\\)`}</MathJax>
                             <p className="text-red-400">Test fail</p>
                         </>
                     }
@@ -175,21 +175,23 @@ export function EDF({ tasks }: { tasks: Array<Task> }) {
                 {
                     brhTestApplicable ?
                         <>
-                            {brhTestResult[0].map(r => <MathJax>{`\\(${r}\\)`}</MathJax>)}
+                            {brhTestResult[0].map(r => <MathJax key={r} dynamic>{`\\(${r}\\)`}</MathJax>)}
                             <table className="border border-sky-500">
                                 <thead className="border-b border-sky-500">
-                                    <th className="p-2">L</th>
-                                    {tasks.map((_, i) => <th className="p-2 border-l border-sky-500"><MathJax>{`\\(N_${i}^L⋅C_${i}\\)`}</MathJax></th>)}
-                                    <th className="p-2 border-l border-sky-500"><MathJax>{"\\(C_P(0, L)\\)"}</MathJax></th>
-                                    <th className="p-2 border-l border-sky-500"><MathJax>{"\\(C_P(0, L) ≤ L\\)"}</MathJax></th>
+                                    <tr>
+                                        <th className="p-2">L</th>
+                                        {tasks.map((_, i) => <th key={`\\(N_${i}^L⋅C_${i}\\)`} className="p-2 border-l border-sky-500"><MathJax dynamic>{`\\(N_${i}^L⋅C_${i}\\)`}</MathJax></th>)}
+                                        <th className="p-2 border-l border-sky-500"><MathJax>{"\\(C_P(0, L)\\)"}</MathJax></th>
+                                        <th className="p-2 border-l border-sky-500"><MathJax>{"\\(C_P(0, L) ≤ L\\)"}</MathJax></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     {brhTestResult[1].map(result => {
-                                        return <tr>
+                                        return <tr key={`brhTestResult-${result.l}`}>
                                             <td className="p-2 border-l border-sky-500">{result.l}</td>
-                                            {result.taskProcessorDemand.map(([_, process]) => <td className="p-2 border-l border-sky-500"><MathJax>{`\\(${process}\\)`}</MathJax></td>)}
+                                            {result.taskProcessorDemand.map(([_, process], i) => <td key={`${process}-${i}`} className="p-2 border-l border-sky-500"><MathJax dynamic>{`\\(${process}\\)`}</MathJax></td>)}
                                             <td className="p-2 border-l border-sky-500">
-                                                <MathJax>
+                                                <MathJax dynamic>
                                                     {"\\(" +
                                                         result.taskProcessorDemand.map(([n, _]) => n).join("+") +
                                                         "=" +
@@ -227,8 +229,8 @@ export function EDF({ tasks }: { tasks: Array<Task> }) {
                 }
             </Accordion.Title>
             <Accordion.Content>
-                <MathJax>{`\\(LCM\\{${tasks.map(task => task.period).join(",")}\\}=${lcm(tasks.map(task => task.period))}\\)`}</MathJax>
-                <TimingDiagram tasks={tasks} runningRecords={runningRecords} />
+                <MathJax dynamic>{`\\(LCM\\{${tasks.map(task => task.period).join(",")}\\}=${lcm(tasks.map(task => task.period))}\\)`}</MathJax>
+                <TimingDiagram tasks={tasks} runningRecords={runningRecords} maxX={lcm(tasks.map(task => task.period))} />
             </Accordion.Content>
         </Accordion.Panel>
     </Accordion>

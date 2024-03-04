@@ -23,7 +23,7 @@ export function RM({ tasks }: { tasks: Array<Task> }) {
     const runningRecords = simulateSchedule("RM", tasks, lcm(tasks.map(task => task.period)));
     const failedDeadline = firstFailedDeadline(tasks, runningRecords);
 
-    return <Accordion>
+    return <Accordion alwaysOpen>
         <Accordion.Panel>
             <Accordion.Title>
                 {
@@ -84,8 +84,8 @@ export function RM({ tasks }: { tasks: Array<Task> }) {
                 }
             </Accordion.Title>
             <Accordion.Content>
-                <MathJax>{`\\(LCM\\{${tasks.map(task => task.period).join(",")}\\}=${lcm(tasks.map(task => task.period))}\\)`}</MathJax>
-                <TimingDiagram tasks={tasks} runningRecords={runningRecords} />
+                <MathJax dynamic>{`\\(LCM\\{${tasks.map(task => task.period).join(",")}\\}=${lcm(tasks.map(task => task.period))}\\)`}</MathJax>
+                <TimingDiagram tasks={tasks} runningRecords={runningRecords} maxX={lcm(tasks.map(task => task.period))} />
             </Accordion.Content>
         </Accordion.Panel>
     </Accordion>
