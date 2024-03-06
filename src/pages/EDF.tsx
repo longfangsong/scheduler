@@ -29,8 +29,8 @@ function decideLMax(tasks: Task[], u: number): [number, Array<string>] {
             (1 - u));
         result.push(`L^* = ⌈\\frac {Σ(T_i-D_i)U_i} {1-U}⌉ = 
             ⌈\\frac
-            {${tasks.map(task => `(${task.period}-${task.deadline}) × ${task.wcet / task.period}`).join('+')}}
-            {1-${u}}⌉ = ${lStar}`);
+            {${tasks.map(task => `(${task.period}-${task.deadline}) × ${math.simplify(`${task.wcet} / ${task.period}`).toTex()}`).join('+')}}
+            {1-${u.toFixed(3)}}⌉ = ${lStar}`);
         const lBRH = Math.max(lStar, ...tasks.map(task => task.deadline));
         result.push(`L_{BRH} = max\\{${tasks.map((_, index) => `D_${index}`).join(',')}, L^*\\}
             = max \\{ ${tasks.map(task => `${task.deadline}`).join(',')}, ${lStar} \\}
@@ -54,7 +54,7 @@ function BRHTest(tasks: Array<Task>): [Array<string>, Array<ProcessorDemandResul
     const u = tasks.map(task => task.wcet / task.period).reduce((a, b) => a + b, 0);
     const calculateU = "U = Σ_{i=1}^{n}(\\frac {C_i} {T_i}) = " +
         tasks.map(task => math.simplify(`${task.wcet} / ${task.period}`).toTex())
-            .join("+") + ((tasks.length > 1) ? `= ${u}` : "");
+            .join("+") + ((tasks.length > 1) ? `= ${u.toFixed(3)}` : "");
     result.push(calculateU);
 
     const [lMax, lMaxResult] = decideLMax(tasks, u);

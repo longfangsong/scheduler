@@ -46,7 +46,7 @@ export function TimingDiagram({ tasks, runningRecords, maxX }:
                     <path d="M0,0 L0,5 L5,2.5 Z" fill="black" />
                 </marker>
                 <marker id={`arrow-green-${id}`} markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto" markerUnits="strokeWidth">
-                    <path d="M0,0 L0,5 L5,2.5 Z" fill="#00FF33" />
+                    <path d="M0,0 L0,5 L5,2.5 Z" fill="rgb(0, 255, 51)" />
                 </marker>
                 <marker id={`arrow-red-${id}`} markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto" markerUnits="strokeWidth">
                     <path d="M0,0 L0,5 L5,2.5 Z" fill="red" />
@@ -110,7 +110,7 @@ export function TimingDiagram({ tasks, runningRecords, maxX }:
                             y1={transformY(index * 2 + 1)}
                             x2={transformX(time)}
                             y2={transformY(index * 2 + 1.5)}
-                            style={{ stroke: "green", strokeWidth: 1, markerEnd: `url(#arrow-green-${id})` }} />
+                            style={{ stroke: "rgb(0, 255, 51)", strokeWidth: 1, markerEnd: `url(#arrow-green-${id})` }} />
                     );
             })}
             {/* deadline arrows */}

@@ -14,8 +14,8 @@ export function RM({ tasks }: { tasks: Array<Task> }) {
     const uRM = tasks.length * (Math.pow(2, 1 / tasks.length) - 1);
     const calculateU = "U = Σ_{i=1}^{n}(\\frac {C_i} {T_i}) = " +
         tasks.map(task => math.simplify(`${task.wcet} / ${task.period}`).toTex())
-            .join("+") + ((tasks.length > 1) ? `= ${u}` : "");
-    const calculateURM = `U_{RM} = n (2^{\\frac 1 n} - 1) = ${tasks.length} (2^{\\frac 1 {${tasks.length}}} - 1) = ${uRM}`;
+            .join("+") + ((tasks.length > 1) ? `= ${u.toFixed(3)}` : "");
+    const calculateURM = `U_{RM} = n (2^{\\frac 1 n} - 1) = ${tasks.length} (2^{\\frac 1 {${tasks.length}}} - 1) = ${uRM.toFixed(3)}`;
 
     const testApplicable = identicalOffset && deadlineEqualsToPeriod;
     const testPass = u <= uRM;
