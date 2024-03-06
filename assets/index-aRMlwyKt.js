@@ -113,10 +113,10 @@ function print() { __p += __j.call(arguments, '') }
         = LCM \\{${e.map((a,s)=>`T_${s}`).join(",")}\\} 
         = LCM \\{${e.map(a=>`${a.period}`).join(",")}\\}
         = ${l}
-        `),t<1){n.push("U < 1, L_{max} = min\\{L_{LCM}, L_{BRH}\\}");const a=tt.sumBy(e,c=>(c.period-c.deadline)*(c.wcet/c.period))/(1-t);n.push(`L^* = \\frac {Σ(T_i-D_i)U_i} {1-U} = 
-            \\frac
+        `),t<1){n.push("U < 1, L_{max} = min\\{L_{LCM}, L_{BRH}\\}");const a=Math.ceil(tt.sumBy(e,c=>(c.period-c.deadline)*(c.wcet/c.period))/(1-t));n.push(`L^* = ⌈\\frac {Σ(T_i-D_i)U_i} {1-U}⌉ = 
+            ⌈\\frac
             {${e.map(c=>`(${c.period}-${c.deadline}) × ${c.wcet/c.period}`).join("+")}}
-            {1-${t}} = ${a}`);const s=Math.max(a,...e.map(c=>c.deadline));n.push(`L_{BRH} = max\\{${e.map((c,d)=>`D_${d}`).join(",")}, L^*\\}
+            {1-${t}}⌉ = ${a}`);const s=Math.max(a,...e.map(c=>c.deadline));n.push(`L_{BRH} = max\\{${e.map((c,d)=>`D_${d}`).join(",")}, L^*\\}
             = max \\{ ${e.map(c=>`${c.deadline}`).join(",")}, ${a} \\}
             = ${s}`),o=Math.min(l,s),n.push(`L_{max} 
             = min\\{L_{LCM}, L_{BRH}\\}
