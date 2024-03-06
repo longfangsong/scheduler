@@ -24,13 +24,13 @@ function decideLMax(tasks: Task[], u: number): [number, Array<string>] {
         `);
     if (u < 1) {
         result.push(`U < 1, L_{max} = min\\{L_{LCM}, L_{BRH}\\}`);
-        const lStar = (_.sumBy(tasks, task => (task.period - task.deadline) * (task.wcet / task.period)))
+        const lStar = Math.ceil((_.sumBy(tasks, task => (task.period - task.deadline) * (task.wcet / task.period)))
             /
-            (1 - u);
-        result.push(`L^* = \\frac {Σ(T_i-D_i)U_i} {1-U} = 
-            \\frac
+            (1 - u));
+        result.push(`L^* = ⌈\\frac {Σ(T_i-D_i)U_i} {1-U}⌉ = 
+            ⌈\\frac
             {${tasks.map(task => `(${task.period}-${task.deadline}) × ${task.wcet / task.period}`).join('+')}}
-            {1-${u}} = ${lStar}`);
+            {1-${u}}⌉ = ${lStar}`);
         const lBRH = Math.max(lStar, ...tasks.map(task => task.deadline));
         result.push(`L_{BRH} = max\\{${tasks.map((_, index) => `D_${index}`).join(',')}, L^*\\}
             = max \\{ ${tasks.map(task => `${task.deadline}`).join(',')}, ${lStar} \\}
