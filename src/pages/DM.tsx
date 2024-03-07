@@ -3,9 +3,9 @@ import { Task } from "../model";
 import { failedIcon, notApplicableIcon, passedIcon } from "../components/Icons";
 import { MathJax } from "better-react-mathjax";
 import { firstFailedDeadline, simulateSchedule } from "../schedule/scheduleSimulator";
-import { TimingDiagram } from "../components/TimingDiagram";
 import _ from "lodash";
 import { lcm } from "../util";
+import { HyperPeriodAnalysis } from "../components/HyperPeriodAnalysis";
 
 function responseTimeTest(tasks: Array<Task>): [boolean, Array<string>] {
     const results = [];
@@ -111,8 +111,7 @@ export function DM({ tasks }: { tasks: Array<Task> }) {
                 }
             </Accordion.Title>
             <Accordion.Content>
-                <MathJax dynamic>{`\\(LCM\\{${tasks.map(task => task.period).join(",")}\\}=${lcm(tasks.map(task => task.period))}\\)`}</MathJax>
-                <TimingDiagram tasks={tasks} runningRecords={runningRecords} maxX={lcm(tasks.map(task => task.period))} />
+                <HyperPeriodAnalysis runningRecords={runningRecords} tasks={tasks} />
             </Accordion.Content>
         </Accordion.Panel>
     </Accordion>

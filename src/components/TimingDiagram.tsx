@@ -140,14 +140,14 @@ export function TimingDiagram({ tasks, runningRecords, maxX }:
             {/* schedule rects */}
             {runningRecords.map(schedule =>
                 <g
-                    key={`schedule-${schedule.task_id}-${schedule.startTime}-${schedule.endTime}-${schedule.round}`}
-                    transform={`translate(${transformX(schedule.startTime)},${transformY(schedule.task_id * 2 + 1)})`}>
+                    key={`schedule-${schedule.taskId}-${schedule.startTime}-${schedule.endTime}-${schedule.round}`}
+                    transform={`translate(${transformX(schedule.startTime)},${transformY(schedule.taskId * 2 + 1)})`}>
                     <rect
                         x="0" y="-1"
                         width={GRID_SIZE * (schedule.endTime - schedule.startTime)}
                         height={GRID_SIZE}
-                        fill={TaskColors[schedule.task_id % TaskColors.length]}
-                        stroke={TaskColors[schedule.task_id % TaskColors.length]}
+                        fill={TaskColors[schedule.taskId % TaskColors.length]}
+                        stroke={TaskColors[schedule.taskId % TaskColors.length]}
                         strokeOpacity="1"
                         opacity="0.5"
                     ></rect>

@@ -2,7 +2,7 @@ import _ from "lodash";
 import { Task } from "../model";
 
 export interface RunningRecord {
-    task_id: number,
+    taskId: number,
     round: number,
     startTime: number,
     // exclusive
@@ -25,7 +25,7 @@ export function firstFailedDeadline(
     for (const { id, round, deadline } of absoluteDeadlines) {
         const lastCorrespondingRunning = _.maxBy(
             runningRecords
-                .filter(running => running.task_id === id && running.round === round),
+                .filter(running => running.taskId === id && running.round === round),
             running => running.endTime
         );
         if (lastCorrespondingRunning === undefined || lastCorrespondingRunning.endTime > deadline) {
@@ -84,11 +84,11 @@ function simulate(
         const toRun = highestPriorityIn(readyTasks);
         const done = toRun?.execute();
         const lastResult = _.last(result);
-        if (lastResult && lastResult.task_id === toRun?.id && lastResult.round === toRun?.nextOrCurrentRound) {
+        if (lastResult && lastResult.taskId === toRun?.id && lastResult.round === toRun?.nextOrCurrentRound) {
             lastResult.endTime++;
         } else if (toRun) {
             result.push({
-                task_id: toRun.id,
+                taskId: toRun.id,
                 round: toRun.nextOrCurrentRound,
                 startTime: time,
                 endTime: time + 1

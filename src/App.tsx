@@ -5,7 +5,7 @@ import { TaskTable } from './components/TasksTable';
 import { Task } from './model';
 import { Tabs } from 'flowbite-react';
 import { EDF } from './pages/EDF';
-import { RM } from './pages/RM';
+import { RM } from "./pages/RM";
 import { DM } from './pages/DM';
 
 function App() {
