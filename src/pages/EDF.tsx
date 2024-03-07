@@ -87,7 +87,7 @@ export function EDF({ tasks }: { tasks: Array<Task> }) {
     const u = tasks.map(task => task.wcet / task.period).reduce((a, b) => a + b, 0);
     const calculateU = "U = Σ_{i=1}^{n}(\\frac {C_i} {T_i}) = " +
         tasks.map(task => math.simplify(`${task.wcet} / ${task.period}`).toTex())
-            .join("+") + ((tasks.length > 1) ? `= ${u}` : "");
+            .join("+") + ((tasks.length > 1) ? `= ${u.toFixed(3)}` : "");
     const liuLaylandTestApplicable = identicalOffset && deadlineEqualsToPeriod;
     const liuLaylandTestPass = u <= 1;
 
@@ -129,7 +129,7 @@ export function EDF({ tasks }: { tasks: Array<Task> }) {
                         <span>Task deadline equals the period</span>
                     </List.Item>
                 </List>
-                {liuLaylandTestApplicable ? <>
+                {liuLaylandTestApplicable ? <div className="overflow-scroll">
                     <MathJax dynamic>{`\\(${calculateU}\\)`}</MathJax>
                     {
                         u <= 1 ? <>
@@ -140,7 +140,7 @@ export function EDF({ tasks }: { tasks: Array<Task> }) {
                             <p className="text-red-400">Test fail</p>
                         </>
                     }
-                </> : <></>}
+                </div> : <></>}
             </Accordion.Content>
         </Accordion.Panel>
         <Accordion.Panel>
@@ -149,15 +149,15 @@ export function EDF({ tasks }: { tasks: Array<Task> }) {
                     (!brhTestApplicable) ?
                         <>
                             {notApplicableIcon}
-                            <span className="ml-1">Baruah, Rosier and Layland Test —— Not Applicable</span>
+                            <span className="ml-1">Processor-demand analysis/Baruah, Rosier and Layland Test —— Not Applicable</span>
                         </> : brhTestPass ?
                             <>
                                 {passedIcon}
-                                <span className="ml-1">Baruah, Rosier and Layland Test —— Passed</span>
+                                <span className="ml-1">Processor-demand analysis/Baruah, Rosier and Layland Test —— Passed</span>
                             </>
                             : <>
                                 {failedIcon}
-                                <span className="ml-1">Baruah, Rosier and Layland Test —— Failed </span>
+                                <span className="ml-1">Processor-demand analysis/Baruah, Rosier and Layland Test —— Failed </span>
                             </>
                 }
             </Accordion.Title>
@@ -174,7 +174,7 @@ export function EDF({ tasks }: { tasks: Array<Task> }) {
                 </List>
                 {
                     brhTestApplicable ?
-                        <>
+                        <div className="overflow-scroll">
                             {brhTestResult[0].map(r => <MathJax key={r} dynamic>{`\\(${r}\\)`}</MathJax>)}
                             <table className="border border-sky-500">
                                 <thead className="border-b border-sky-500">
@@ -209,7 +209,7 @@ export function EDF({ tasks }: { tasks: Array<Task> }) {
                                     })}
                                 </tbody>
                             </table>
-                        </> :
+                        </div> :
                         <></>
                 }
             </Accordion.Content>

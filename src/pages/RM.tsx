@@ -53,7 +53,7 @@ export function RM({ tasks }: { tasks: Array<Task> }) {
                         <span>Task deadline equals the period</span>
                     </List.Item>
                 </List>
-                {testApplicable ? <>
+                {testApplicable ? <div className="overflow-scroll">
                     <MathJax dynamic>{`\\(${calculateU}\\)`}</MathJax>
                     <MathJax dynamic>{`\\(${calculateURM}\\)`}</MathJax>
                     {
@@ -66,7 +66,7 @@ export function RM({ tasks }: { tasks: Array<Task> }) {
                             <p>Note Liu and Layland Test for RM scheduling algorithm is sufficient but not necessary, so the task set may still be schedulable, please continue doing Hyper Period Analysis.</p>
                         </>
                     }
-                </> : <></>}
+                </div> : <></>}
             </Accordion.Content>
         </Accordion.Panel>
         <Accordion.Panel>

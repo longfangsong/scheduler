@@ -13,9 +13,10 @@ function responseTimeTest(tasks: Array<Task>): [boolean, Array<string>] {
     const ordered = _.reverse(_.sortBy(withId, task => -task.deadline));
     for (const [taskIndex, task] of ordered.entries()) {
         let lastIterResult = task.wcet;
-        results.push(`R_${task.id}^0=C_${task.id}=${lastIterResult} \\le D_${task.id}=${task.deadline}`);
+        results.push(`R_${task.id}^0=C_${task.id}=${lastIterResult} \\le D_${task.id}=${task.deadline}, OK`);
         if (taskIndex !== 0) {
             let currentIterIndex = 1;
+            // eslint-disable-next-line no-constant-condition
             while (true) {
                 let thisIterResult = task.wcet;
                 let thisIterResultText = `R_${task.id}^${currentIterIndex} = C_{${task.id}}`;
@@ -65,15 +66,15 @@ export function DM({ tasks }: { tasks: Array<Task> }) {
                     (!testApplicable) ?
                         <>
                             {notApplicableIcon}
-                            <span className="ml-1">Joseph and Pandya Test —— Not Applicable</span>
+                            <span className="ml-1">Response time analysis/Joseph and Pandya Test —— Not Applicable</span>
                         </> : testPass ?
                             <>
                                 {passedIcon}
-                                <span className="ml-1">Joseph and Pandya Test —— Passed</span>
+                                <span className="ml-1">Response time analysis/Joseph and Pandya Test —— Passed</span>
                             </>
                             : <>
                                 {failedIcon}
-                                <span className="ml-1">Joseph & Pandya Test —— Failed </span>
+                                <span className="ml-1">Response time analysis/Joseph & Pandya Test —— Failed </span>
                             </>
                 }
             </Accordion.Title>
@@ -88,11 +89,11 @@ export function DM({ tasks }: { tasks: Array<Task> }) {
                         <span>Task deadline does not exceed the period</span>
                     </List.Item>
                 </List>
-                {testApplicable ? <>
+                {testApplicable ? <div className="overflow-scroll">
                     {
                         testText.map(t => <MathJax dynamic key={t}>{`\\(${t}\\)`}</MathJax>)
                     }
-                </> : <></>}
+                </div> : <></>}
             </Accordion.Content>
         </Accordion.Panel>
         <Accordion.Panel>
