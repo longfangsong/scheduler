@@ -1,12 +1,13 @@
 import { Accordion, List } from "flowbite-react";
 import { Task } from "../model";
 import * as math from "mathjs";
-import { failedIcon, notApplicableIcon, passedIcon } from "../components/Icons";
+import { failedIcon, passedIcon } from "../components/Icons";
 import { MathJax } from "better-react-mathjax";
 import { firstFailedDeadline, simulateSchedule } from "../schedule/scheduleSimulator";
 import _ from "lodash";
 import { lcm } from "../util";
 import { HyperPeriodAnalysis } from "../components/HyperPeriodAnalysis";
+import { TestResult } from "../components/TestResult";
 
 interface ProcessorDemandResult {
     l: number;
@@ -102,33 +103,22 @@ export function EDF({ tasks }: { tasks: Array<Task> }) {
     return <Accordion alwaysOpen>
         <Accordion.Panel>
             <Accordion.Title>
-                {
-                    (!liuLaylandTestApplicable) ?
-                        <>
-                            {notApplicableIcon}
-                            <span className="ml-1">Liu and Layland Test —— Not Applicable</span>
-                        </> : liuLaylandTestPass ?
-                            <>
-                                {passedIcon}
-                                <span className="ml-1">Liu and Layland Test —— Passed</span>
-                            </>
-                            : <>
-                                {failedIcon}
-                                <span className="ml-1">Liu & Layland Test —— Failed </span>
-                            </>
-                }
+                <TestResult name="Liu and Layland Test" applicable={liuLaylandTestApplicable} passed={liuLaylandTestPass} />
             </Accordion.Title>
             <Accordion.Content>
-                <List unstyled>
-                    <List.Item>
-                        {identicalOffset ? passedIcon : failedIcon}
-                        <span>All tasks have identical offsets</span>
-                    </List.Item>
-                    <List.Item>
-                        {deadlineEqualsToPeriod ? passedIcon : failedIcon}
-                        <span>Task deadline equals the period</span>
-                    </List.Item>
-                </List>
+                <div className="border rounded-md relative p-4 mb-3">
+                    <span className="absolute -top-3 left-2 bg-white text-gray-400">Applicable?</span>
+                    <List unstyled>
+                        <List.Item>
+                            {identicalOffset ? passedIcon : failedIcon}
+                            <span>All tasks have identical offsets</span>
+                        </List.Item>
+                        <List.Item>
+                            {deadlineEqualsToPeriod ? passedIcon : failedIcon}
+                            <span>Task deadline equals the period</span>
+                        </List.Item>
+                    </List>
+                </div>
                 {liuLaylandTestApplicable ? <div className="overflow-scroll">
                     <MathJax dynamic>{`\\(${calculateU}\\)`}</MathJax>
                     {
@@ -145,33 +135,22 @@ export function EDF({ tasks }: { tasks: Array<Task> }) {
         </Accordion.Panel>
         <Accordion.Panel>
             <Accordion.Title>
-                {
-                    (!brhTestApplicable) ?
-                        <>
-                            {notApplicableIcon}
-                            <span className="ml-1">Processor-demand analysis/Baruah, Rosier and Layland Test —— Not Applicable</span>
-                        </> : brhTestPass ?
-                            <>
-                                {passedIcon}
-                                <span className="ml-1">Processor-demand analysis/Baruah, Rosier and Layland Test —— Passed</span>
-                            </>
-                            : <>
-                                {failedIcon}
-                                <span className="ml-1">Processor-demand analysis/Baruah, Rosier and Layland Test —— Failed </span>
-                            </>
-                }
+                <TestResult name="Processor-demand analysis / Baruah, Rosier and Layland Test" applicable={brhTestApplicable} passed={brhTestPass} />
             </Accordion.Title>
             <Accordion.Content>
-                <List unstyled>
-                    <List.Item>
-                        {identicalOffset ? passedIcon : failedIcon}
-                        <span>All tasks have identical offsets</span>
-                    </List.Item>
-                    <List.Item>
-                        {deadlineLessEqualToPeriod ? passedIcon : failedIcon}
-                        <span>Task deadline does not exceed the period</span>
-                    </List.Item>
-                </List>
+                <div className="border rounded-md relative p-4 mb-3">
+                    <span className="absolute -top-3 left-2 bg-white text-gray-400">Applicable?</span>
+                    <List unstyled>
+                        <List.Item>
+                            {identicalOffset ? passedIcon : failedIcon}
+                            <span>All tasks have identical offsets</span>
+                        </List.Item>
+                        <List.Item>
+                            {deadlineLessEqualToPeriod ? passedIcon : failedIcon}
+                            <span>Task deadline does not exceed the period</span>
+                        </List.Item>
+                    </List>
+                </div>
                 {
                     brhTestApplicable ?
                         <div className="overflow-scroll">
@@ -216,17 +195,7 @@ export function EDF({ tasks }: { tasks: Array<Task> }) {
         </Accordion.Panel>
         <Accordion.Panel>
             <Accordion.Title>
-                {
-                    failedDeadline ?
-                        <>
-                            {failedIcon}
-                            <span className="ml-1">Hyper Period Analysis —— Failed </span>
-                        </> :
-                        <>
-                            {passedIcon}
-                            <span className="ml-1">Hyper Period Analysis —— Passed </span>
-                        </>
-                }
+                <TestResult name="Hyper Period Analysis" applicable={true} passed={!failedDeadline} />
             </Accordion.Title>
             <Accordion.Content>
                 <HyperPeriodAnalysis runningRecords={runningRecords} tasks={tasks} />

@@ -11,9 +11,9 @@ export function TaskTable(
 ) {
     const [tasks, setTasks] = useState<Array<Partial<Task>>>(currentTasks || []);
 
-    // function complain() {
-    //     console.log(`Why these ****ing scientists don't just write "WCET", "deadline", "period" and "offset"! I can NEVER remember these abbreviation!`);
-    // }
+    function complain() {
+        console.log(`Why these ****ing scientists don't just write "WCET", "deadline", "period" and "offset"! I can NEVER remember these abbreviation!`);
+    }
 
     function updateTasks(tasks: Array<Partial<Task>>) {
         onUpdate(tasks.map(it => checkTask(it)).filter(it => it !== null) as Array<Task>);
@@ -25,29 +25,28 @@ export function TaskTable(
             <table className="mx-auto table-fixed">
                 <thead>
                     <tr>
-                        <th className="w-7"></th>
-                        <th className="w-7" id="wcet-text">
-                            <Tooltip content="WCET: Worst case executing time of the task">
+                        <th className="w-7 border"></th>
+                        <th className="w-7 border p-2" id="wcet-text">
+                            <Tooltip content="WCET: Worst case executing time of the task" onMouseEnter={complain}>
                                 <MathJax>{"\\(C_i\\)"}</MathJax>
                             </Tooltip>
                         </th>
-                        <th className="w-7" id="deadline-text">
-                            <Tooltip content="Deadline: Task should be done after this much time after being created">
+                        <th className="w-7 border p-2" id="deadline-text">
+                            <Tooltip content="Deadline: Task should be done after this much time after being created" onMouseEnter={complain}>
                                 <MathJax>{"\\(D_i\\)"}</MathJax>
                             </Tooltip>
                         </th>
-                        <th className="w-7" id="period-text">
-                            <Tooltip content="Period: How often does the task being created">
+                        <th className="w-7 border p-2" id="period-text">
+                            <Tooltip content="Period: How often does the task being created" onMouseEnter={complain}>
                                 <MathJax>{"\\(T_i\\)"}</MathJax>
                             </Tooltip>
                         </th>
-                        <th className="w-7" id="offset-text">
-                            <Tooltip content="Offset: When does the task start for the first time">
+                        <th className="w-7 border p-2" id="offset-text">
+                            <Tooltip content="Offset: When does the task start for the first time" onMouseEnter={complain}>
                                 <MathJax>{"\\(O_i\\)"}</MathJax>
                             </Tooltip></th>
-                        <th className="w-7" id="utilization-text">
-                            <Tooltip content="Utilization: The fraction of the processor’s capacity that is used for executing
-                the task">
+                        <th className="w-7 border p-2" id="utilization-text">
+                            <Tooltip content="Utilization: The fraction of the processor’s capacity that is used for executing the task" onMouseEnter={complain}>
                                 <MathJax>{"\\(U_i\\)"}</MathJax>
                             </Tooltip>
                         </th>
@@ -61,34 +60,35 @@ export function TaskTable(
                             updateTasks(newTasks);
                         }
                         return <tr key={`${index}-${task.wcet}-${task.deadline}-${task.period}-${task.offset}`}>
-                            <td><MathJax dynamic>{`\\(τ_${index}\\)`}</MathJax></td>
-                            <td><EditableText initialText={task.wcet?.toString() || ""} onBlur={value => {
+                            <td className="w-7 border p-2 text-center"><MathJax dynamic>{`\\(τ_${index}\\)`}</MathJax></td>
+                            <td className="w-7 border p-2 text-center"><EditableText initialText={task.wcet?.toString() || ""} onBlur={value => {
                                 const wcet = parseInt(value);
                                 const newTask = { ...task, wcet };
                                 updateTasksState(index, newTask);
                             }} /></td>
-                            <td><EditableText initialText={task.deadline?.toString() || ""} onBlur={value => {
+                            <td className="w-7 border p-2 text-center"><EditableText initialText={task.deadline?.toString() || ""} onBlur={value => {
                                 const deadline = parseInt(value);
                                 const newTask = { ...task, deadline };
                                 updateTasksState(index, newTask);
                             }} /></td>
-                            <td><EditableText initialText={task.period?.toString() || ""} onBlur={value => {
-                                const period = parseInt(value);
-                                const newTask = { ...task, period };
-                                updateTasksState(index, newTask);
-                            }} /></td>
-                            <td><EditableText initialText={task.offset?.toString() || ""} onBlur={value => {
+                            <td className="w-7 border p-2 text-center">
+                                <EditableText initialText={task.period?.toString() || ""} onBlur={value => {
+                                    const period = parseInt(value);
+                                    const newTask = { ...task, period };
+                                    updateTasksState(index, newTask);
+                                }} /></td>
+                            <td className="w-7 border p-2 text-center"><EditableText initialText={task.offset?.toString() || ""} onBlur={value => {
                                 const offset = parseInt(value);
                                 const newTask = { ...task, offset };
                                 updateTasksState(index, newTask);
                             }} /></td>
-                            <td>{task.wcet !== null && task.period !== null ?
+                            <td className="w-7 border p-2 text-center">{task.wcet !== null && task.period !== null ?
                                 <MathJax dynamic>
                                     {`\\(${math.simplify(`${task.wcet} / ${task.period}`).toTex()}\\)`}
                                 </MathJax> : <></>}</td>
                             <td>
                                 <button
-                                    className="cursor-pointer text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-1 me-2 mt-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+                                    className="cursor-pointer text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-1 me-2 mt-2 mb-2 ml-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
                                     onClick={
                                         () => updateTasks([...tasks.slice(0, index), ...tasks.slice(index + 1)])
                                     }>x</button>
@@ -97,9 +97,9 @@ export function TaskTable(
                     })}
                 </tbody>
             </table>
-            <Button className="mx-auto w-44 h-6" onClick={() => {
+            <Button className="mx-auto w-44 h-6 mt-2" onClick={() => {
                 updateTasks([...tasks, { wcet: 1, deadline: 1, period: 1, offset: 0 }])
             }}>+</Button>
-        </div>
+        </div >
     )
 }

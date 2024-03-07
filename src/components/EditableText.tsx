@@ -29,7 +29,7 @@ export function EditableText({ initialText, onBlur }: { initialText: string, onB
         <div>
             {isEditing ? (
                 <input
-                    className="w-10 p-0 text-center bg-white text-black"
+                    className="w-8 p-0 text-center bg-white text-black"
                     ref={inputRef}
                     type="text"
                     value={value}
@@ -38,7 +38,7 @@ export function EditableText({ initialText, onBlur }: { initialText: string, onB
                     autoFocus
                 />
             ) : (
-                <div onClick={startEditing}>{value}</div>
+                <div className="w-8" onClick={startEditing}>{value}</div>
             )}
         </div>
     );

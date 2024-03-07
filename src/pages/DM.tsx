@@ -1,11 +1,12 @@
 import { Accordion, List } from "flowbite-react";
 import { Task } from "../model";
-import { failedIcon, notApplicableIcon, passedIcon } from "../components/Icons";
+import { failedIcon, passedIcon } from "../components/Icons";
 import { MathJax } from "better-react-mathjax";
 import { firstFailedDeadline, simulateSchedule } from "../schedule/scheduleSimulator";
 import _ from "lodash";
 import { lcm } from "../util";
 import { HyperPeriodAnalysis } from "../components/HyperPeriodAnalysis";
+import { TestResult } from "../components/TestResult";
 
 function responseTimeTest(tasks: Array<Task>): [boolean, Array<string>] {
     const results = [];
@@ -62,33 +63,22 @@ export function DM({ tasks }: { tasks: Array<Task> }) {
     return <Accordion alwaysOpen>
         <Accordion.Panel>
             <Accordion.Title>
-                {
-                    (!testApplicable) ?
-                        <>
-                            {notApplicableIcon}
-                            <span className="ml-1">Response time analysis/Joseph and Pandya Test —— Not Applicable</span>
-                        </> : testPass ?
-                            <>
-                                {passedIcon}
-                                <span className="ml-1">Response time analysis/Joseph and Pandya Test —— Passed</span>
-                            </>
-                            : <>
-                                {failedIcon}
-                                <span className="ml-1">Response time analysis/Joseph & Pandya Test —— Failed </span>
-                            </>
-                }
+                <TestResult name="Response time analysis/Joseph and Pandya Test" applicable={testApplicable} passed={testPass} />
             </Accordion.Title>
             <Accordion.Content>
-                <List unstyled>
-                    <List.Item>
-                        {identicalOffset ? passedIcon : failedIcon}
-                        <span>All tasks have identical offsets</span>
-                    </List.Item>
-                    <List.Item>
-                        {deadlineNotExceedPeriod ? passedIcon : failedIcon}
-                        <span>Task deadline does not exceed the period</span>
-                    </List.Item>
-                </List>
+                <div className="border rounded-md relative p-4 mb-3">
+                    <span className="absolute -top-3 left-2 bg-white text-gray-400">Applicable?</span>
+                    <List unstyled>
+                        <List.Item>
+                            {identicalOffset ? passedIcon : failedIcon}
+                            <span>All tasks have identical offsets</span>
+                        </List.Item>
+                        <List.Item>
+                            {deadlineNotExceedPeriod ? passedIcon : failedIcon}
+                            <span>Task deadline does not exceed the period</span>
+                        </List.Item>
+                    </List>
+                </div>
                 {testApplicable ? <div className="overflow-scroll">
                     {
                         testText.map(t => <MathJax dynamic key={t}>{`\\(${t}\\)`}</MathJax>)
@@ -98,17 +88,7 @@ export function DM({ tasks }: { tasks: Array<Task> }) {
         </Accordion.Panel>
         <Accordion.Panel>
             <Accordion.Title>
-                {
-                    failedDeadline ?
-                        <>
-                            {failedIcon}
-                            <span className="ml-1">Hyper Period Analysis —— Failed </span>
-                        </> :
-                        <>
-                            {passedIcon}
-                            <span className="ml-1">Hyper Period Analysis —— Passed </span>
-                        </>
-                }
+                <TestResult name="Hyper Period Analysis" applicable={true} passed={!failedDeadline} />
             </Accordion.Title>
             <Accordion.Content>
                 <HyperPeriodAnalysis runningRecords={runningRecords} tasks={tasks} />
